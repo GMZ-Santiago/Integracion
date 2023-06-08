@@ -1,0 +1,101 @@
+.cardContainer {
+  background-color: lightsalmon;
+   width: auto;
+   height:min-content ;
+   padding: 1em;
+   border-radius: 10px;
+   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-right: 6px;
+   margin-left: 0.5px;
+   flex: 1;
+   font-size: 10px;
+   line-height: 0.2;
+}
+
+.cardContainer:hover {
+  transform: scale(1.05);
+}
+
+.atributes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  font-size: small;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.closeButton{
+  background-color: rgb(255, 255, 255);
+  border: 0px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+  transition: 1s;
+}
+
+.closeButton:hover{
+  box-shadow: 10px 9px 26px 12px rgba(0,0,0,0.75);
+  color: #fff !important;
+  font-size: 20px;
+  font-weight: 200;
+  padding: 0.5em 1.2em;
+  background: #ac3131;
+  border: 2px solid;
+  border-color: #ac3131;
+  position: relative;
+}
+
+.imageContainer {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.name {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 0.3s ease-in-out; /* Animation to fade in */
+  -ms-transition: all 0.3s ease-in-out; /* Animation to fade in */
+  transition: all 0.3s ease-in-out; /* Animation to fade in */
+}
+
+.characterImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-transition: all 0.3s ease-in-out; /* Animation to fade in */
+  -ms-transition: all 0.3s ease-in-out; /* Animation to fade in */
+  transition: all 0.3s ease-in-out;
+}
+
+.imageContainer:hover .characterImage {
+  opacity: 0.4;
+}
+
+.imageContainer:hover .name {
+  opacity: 1;
+}
+
+.fontSize{
+    font-size: 30px;
+    color: orange;
+    border-color: black;
+    border-width: 1.5px;
+    border-style: solid;
+    border-radius: 15px;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5em;
+    margin: 0.5em;
+
+}
