@@ -2,16 +2,17 @@ import Cards from "./components/cards/Cards";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import NavBar from "./components/navBar/navBar";
-import { Route, Routes, useLocation, useNavigate,  } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { removeFavorite } from "./redux/actions";
 
-
-import style from "./App.css"
+import style from "./App.css";
 import "./App.css";
 import Detail from "./components/detail/detail";
 import About from "./components/About/About";
 import ErrorPage from "./components/error/errorPage";
 import LandingPage from "./components/landingPage/landingPage";
 import Favorities from "./components/favorites/favorities";
+import { useDispatch } from "react-redux";
 
 // const example = {
 //   id: 1,
@@ -32,34 +33,46 @@ function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const EMAIL = 'rick@morty.com';
-  const PASSWORD = 'ryk123';
-
-  function login(userData) {
-    if(userData.password === PASSWORD && userData.email === EMAIL){
-      setAccess(true);
-      navigate('/home');
-    }
+  async function login(userData) {
+    try {
+      const { email, password } = userData;
+      const URL = "http://localhost:3001/rickandmorty/login/";
+      const {data} = await axios(URL + `?email=${email}&password=${password}`) 
+        const { access } = data;
+        setAccess(data);
+        access && navigate("/home");
+      
+    } catch (error) {
+      console.log(error);
   }
+}
 
-useEffect(() => {
-  !access && navigate ('/');
-},[access]);
+  useEffect(() => {
+    !access && navigate("/");
+  }, [access, navigate]);
 
-  function searchHandler(id) {
+  async function searchHandler(id) {
     // setCharacters([...characters, example]);
-    axios(`https://rickandmortyapi.com/api/character/${id}`).then(({data}) => {
-      if (data.name) {
-        setCharacters((oldChars) => [...oldChars, data]);
-      } else {
-        window.alert("¡No hay personajes con este ID!");
-      }
-    });
+
+    try {
+     const response = await axios(`https://localhost:3001/rickandmorty/character/${id}`)
+     const data = response.data
+        if (data.name) {
+          setCharacters((oldChars) => [...oldChars, data]);
+        } else {
+          window.alert("¡No hay personajes con este ID!");
+        }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function closeHandler(id) {
     let deleted = characters.filter((character) => character.id !== Number(id));
+
+    dispatch(removeFavorite(id));
 
     setCharacters(deleted);
   }
@@ -93,24 +106,23 @@ useEffect(() => {
     <div className="App">
       <div className={style.nav}></div>
 
-    {location.pathname !== '/' && <NavBar onSearch={searchHandler} random={randomHandler} />}
-
-      
+      {location.pathname !== "/" && (
+        <NavBar onSearch={searchHandler} random={randomHandler} />
+      )}
 
       <Routes>
-
-        <Route path = '/' element = {<LandingPage login = {login}/>}/>
-        <Route path = "/home" 
-        element = {<Cards characters={characters} onClose = {closeHandler}/>} />
-        <Route path = "/detail:id" element = {<Detail/>}/>
-        <Route path = "/about" element = {<About />}/>
-        <Route path = "/favorites" element = {<Favorities/>} />
-        <Route path = "*" element = {<ErrorPage/>}/> 
-        
-      </Routes> 
+        <Route path="/" element={<LandingPage login={login} />} />
+        <Route
+          path="/home"
+          element={<Cards characters={characters} onClose={closeHandler} />}
+        />
+        <Route path="/detail:id" element={<Detail />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/favorites" element={<Favorities />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
     </div>
   );
 }
 
 export default App;
-
